@@ -19,8 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "moduleResolution": "Node",
     "paths": {
-      "@auto/graphql": [
-        "src/_autogen/graphql.ts"
+      "@auto/*": [
+        "src/_autogen/*"
       ]
     }
   }
