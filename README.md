@@ -41,7 +41,7 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
   Mimo, że NestJS, framework który został wykorzystany do tworzenia aplikacji, wykorzystuje domyślnie CommonJS, w tym projekcie wszystko wykorzystuje ES Modules oraz targetuje w najnowsze wersje Node'a.
 
   #### WASI/WASM (feat. Rust)
-  W stabilnej fazie projektu zostaną zaimplementowane moduły WASI/WASM obsługę parsowania HTML'a otrzymanego z scrappera.
+  W stabilnej fazie projektu zostaną zaimplementowane moduły WASI/WASM obsługę parsowania HTML'a zapewniające otrzymanego z scrappera.
 
   #### SSR (feat. Vite)
   W tym projekcie zostanie zaimplementowana obsługa SSR dla *landing page*. Aplikacja do planu zajęć pozostanie jako SPA.
