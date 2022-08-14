@@ -3,13 +3,13 @@ import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import path from 'path'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
-import { PuppiesModule } from './puppies/puppies.module';
+import { PuppiesModule } from './puppies/puppies.module'
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      typePaths: ['./**/*.graphql'],
+      typePaths: ['./**/*.graphql', './**/*.gql'],
       definitions: {
         path: path.join(process.cwd(), 'src/_autogen/graphql.ts'),
         outputAs: 'class',

@@ -1,0 +1,15 @@
+type Puppy {
+  id: ID!
+  name: String!
+  age: Int!
+}
+
+type Query {
+  allPuppies: [Puppy!]!
+  puppy(id: ID!): Puppy
+  puppies(id: [ID!]!): [Puppy!]!
+}
+
+type Mutation {
+  createPuppy(name: String!, age: Int!): Puppy
+}
