@@ -34,6 +34,10 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Code generations
+/src/_autogen/*
+!/src/_autogen/**/index.ts
+
 # Other
 .env
 .*.env
