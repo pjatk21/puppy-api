@@ -1,73 +1,49 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Puppy
+GraphQL/~~REST~~ API dla wszystkich studentów PJATK.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Dlaczego?
+Mimo faktu, że Altapi stanowiło przełom jako usługa do planu zajęć, nie spełnia moich wysokich oczekiwań.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
+ - Brak obsługi "rezerwacji"
+ - Monolityczna aplikacja reactowa
+ - Problematyczny protokół scrapowania
+ - Brak obsługi kont dla studentów
+ - Słaba jakość dokumentacji w OpenAPI
 
-## Description
+### Główne zmiany
+ - Pełne wsparcie dla wszystkich wydarzeń z planu zajęć
+ - Plan zajęć będzie dostępny jako:
+   - GraphQL API (`/graphql`)
+   - REST API (`/rest/v1`)
+   - ICS (`/ics`)
+ - Dodanie obsługi kont dla studentów (poprzez Google Identification Services), przechowujące informacje o:
+   - Grupach studenckich
+   - Prywatnych scrapperach
+ - *GraphQL over WS* jako protokół komunikacji dla scrapperów
+ - <small>szczeniaczki</small> 🐾 🐶 🥺
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<details>
+  <summary>Bardziej szczegółowe zmiany</summary>
 
-## Installation
+  #### Baza danych
+  W Altapi wykorzystywana była biblioteka `mongoose` (wraz z MongoDB). Zostanie ona zastąpiona przez ORM [Prisma](https://www.prisma.io/) wraz z Postgres.
 
-```bash
-$ npm install
-```
+  #### Scrappery
+  Altapi było pozbawione jakiejkolwiek autentykacji czy autoryzacji. Scrappery były wewnątrz zaufanej sieci i całe dostarczanie danych było oparte wyłącznie o zaufanie. Tym razem każdy scrapper będzie miał przypisanego właściciela.
 
-## Running the app
+  #### Konwencje
+  Poprzedni projekt całkowicie był napisany w konwencji *code first*. W tym projekcie jednak została zastosowana konwencja *schema first*, ponieważ brak dobrego *type reflection* w TypeScript utrudnia pracę na dłuższą metę.
 
-```bash
-# development
-$ npm run start
+  Również tym razem ESLint będzie miał surowsze zasady związane z pisaniem *type safe* kodu.
 
-# watch mode
-$ npm run start:dev
+  #### Runtime
+  Mimo, że NestJS, framework który został wykorzystany do tworzenia aplikacji, wykorzystuje domyślnie CommonJS, w tym projekcie wszystko wykorzystuje ES Modules oraz targetuje w najnowsze wersje Node'a.
 
-# production mode
-$ npm run start:prod
-```
+  #### WASI/WASM (feat. Rust)
+  W stabilnej fazie projektu zostaną zaimplementowane moduły WASI/WASM obsługę parsowania HTML'a otrzymanego z scrappera.
 
-## Test
+  #### SSR (feat. Vite)
+  W tym projekcie zostanie zaimplementowana obsługa SSR dla *landing page*. Aplikacja do planu zajęć pozostanie jako SPA.
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+</details>
