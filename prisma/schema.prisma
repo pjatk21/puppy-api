@@ -1,0 +1,33 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum EventType {
+  reservation
+  workshop
+  lecture
+  other
+}
+
+model ScheduledEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  code        String?
+  type        EventType @default(other)
+  groups      String[]
+  room        String?
+  begin       DateTime
+  end         DateTime
+  hosts       String[]
+
+  @@index([code], type: Hash)
+  @@index([type], type: Hash)
+  @@index([begin(sort: Desc), code(sort: Desc)])
+  @@unique([type, code, begin, end, groups, hosts, room])
+}

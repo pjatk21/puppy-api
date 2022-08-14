@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql'
 import path from 'path'
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
 import { PuppiesModule } from './puppies/puppies.module'
+import { PrismaModule } from './prisma/prisma.module'
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PuppiesModule } from './puppies/puppies.module'
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
     PuppiesModule,
+    PrismaModule,
   ],
 })
 export class AppModule {}
