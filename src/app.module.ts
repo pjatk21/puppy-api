@@ -1,10 +1,23 @@
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
+import { GraphQLModule } from '@nestjs/graphql'
+import path from 'path'
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import { PuppiesModule } from './puppies/puppies.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: path.join(process.cwd(), 'src/_autogen/graphql.ts'),
+        outputAs: 'class',
+      },
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    }),
+    PuppiesModule,
+  ],
 })
 export class AppModule {}

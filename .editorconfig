@@ -1,4 +1,4 @@
-[*.{js,ts,json,yml,yaml}]
+[*.{js,ts,json,yml,yaml,graphql}]
 indent_size = 2
 indent_style = space
 insert_final_newline = true

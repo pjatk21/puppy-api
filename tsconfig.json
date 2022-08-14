@@ -17,6 +17,11 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": false,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "paths": {
+      "@auto/graphql": [
+        "src/_autogen/graphql.ts"
+      ]
+    }
   }
 }
