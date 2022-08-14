@@ -1,0 +1,16 @@
+scalar DateTime
+
+type Query {
+  now: DateTime!
+}
+
+type Mutation {
+  processShard(rawShard: String!): ScheduledEvent
+}
+
+type ScheduledEvent {
+  id: ID!
+  title: String!
+  begin: DateTime!
+  end: DateTime!
+}

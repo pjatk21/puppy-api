@@ -12,6 +12,5 @@ const app = await NestFactory.create<NestExpressApplication>(
   AppModule,
   adapter,
   { cors: true },
-  // new FastifyAdapter(),
 )
 await app.listen(3000)

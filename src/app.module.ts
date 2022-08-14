@@ -2,9 +2,15 @@ import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 import path from 'path'
-import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core'
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from 'apollo-server-core'
 import { PuppiesModule } from './puppies/puppies.module'
 import { PrismaModule } from './prisma/prisma.module'
+import { ScheduleModule } from './schedule/schedule.module'
+import { DateTimeScalar } from './datetime.scalar'
 
 @Module({
   imports: [
@@ -16,10 +22,15 @@ import { PrismaModule } from './prisma/prisma.module'
         outputAs: 'class',
       },
       playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      plugins: [
+        ApolloServerPluginLandingPageLocalDefault({ footer: false }),
+        // ApolloServerPluginLandingPageProductionDefault({ footer: false }),
+      ],
     }),
     PuppiesModule,
     PrismaModule,
+    ScheduleModule,
   ],
+  providers: [DateTimeScalar],
 })
 export class AppModule {}

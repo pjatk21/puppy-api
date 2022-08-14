@@ -1,5 +1,12 @@
 import { Puppy } from '../_autogen/graphql'
-import { ResolveField, Resolver, Query, Parent, Args, Mutation } from '@nestjs/graphql'
+import {
+  ResolveField,
+  Resolver,
+  Query,
+  Parent,
+  Args,
+  Mutation,
+} from '@nestjs/graphql'
 
 const myPuppies: Puppy[] = [
   {
