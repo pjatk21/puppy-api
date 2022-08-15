@@ -1,0 +1,32 @@
+type Subscription {
+  tasksDispositions(scraperId: ID!): ScrapTask
+}
+
+enum TaskState {
+  """Task is looking for a scrapper that can execute it."""
+  WAITING
+  """Task is being executed by a scrapper."""
+  RUNNING
+  """All available scrappers rejected task execution."""
+  REJECTED
+  """Task execution finished."""
+  DONE
+}
+
+type Mutation {
+  updateOwnState(scraperId: ID!, state: String!): String!
+  updateTaskState(taskId: ID!, state: String!): String!
+  triggerTask(taskId: ID!): String!
+}
+
+"""Arguments required to start scrapping."""
+type ScrapTask {
+  id: ID!
+  name: String!
+  """State of task"""
+  state: TaskState!
+  """First day to scrap"""
+  since: DateTime!
+  """Last day to scrap"""
+  until: DateTime!
+}

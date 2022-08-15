@@ -11,6 +11,7 @@ import { PuppiesModule } from './puppies/puppies.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ScheduleModule } from './schedule/schedule.module'
 import { DateTimeScalar } from './datetime.scalar'
+import { HypervisorModule } from './hypervisor/hypervisor.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DateTimeScalar } from './datetime.scalar'
       playground: false,
       subscriptions: {
         'graphql-ws': true,
+        'subscriptions-transport-ws': true,
       },
       plugins: [
         ApolloServerPluginLandingPageLocalDefault({ footer: false }),
@@ -33,6 +35,7 @@ import { DateTimeScalar } from './datetime.scalar'
     PuppiesModule,
     PrismaModule,
     ScheduleModule,
+    HypervisorModule,
   ],
   providers: [DateTimeScalar],
 })
