@@ -22,6 +22,9 @@ import { DateTimeScalar } from './datetime.scalar'
         outputAs: 'class',
       },
       playground: false,
+      subscriptions: {
+        'graphql-ws': true,
+      },
       plugins: [
         ApolloServerPluginLandingPageLocalDefault({ footer: false }),
         // ApolloServerPluginLandingPageProductionDefault({ footer: false }),
