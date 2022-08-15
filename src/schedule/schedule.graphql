@@ -1,17 +1,33 @@
 scalar DateTime
 
+
 type Query {
-  now: DateTime!
-  getEvent: [ScheduledEvent!]!
+  availableGroups: [String!]!
+  availableHosts: [String!]!
+  allEvents(groups: [String!], hosts: [String!], type: EventType): [ScheduledEvent!]!
+  rangeEvents(begin: DateTime!, end: DateTime!, groups: [String!], hosts: [String!], type: EventType): [ScheduledEvent!]!
 }
 
 type Mutation {
   processFragment(html: String!): ScheduledEvent!
 }
 
+enum EventType {
+  reservation
+  exam
+  workshop
+  lecture
+  other
+}
+
 type ScheduledEvent {
   id: ID!
-  title: String!
   begin: DateTime!
   end: DateTime!
+  title: String!
+  code: String!
+  groups: [String!]!
+  hosts: [String!]!
+  room: String!
+  type: EventType!
 }

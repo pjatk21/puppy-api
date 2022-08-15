@@ -9,25 +9,26 @@ generator client {
 
 enum EventType {
   reservation
+  exam
   workshop
   lecture
   other
 }
 
 model ScheduledEvent {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   title       String
   description String?
   code        String
   type        EventType @default(other)
-  groups      String[] @default([])
+  groups      String[]  @default([])
   room        String
   begin       DateTime
   end         DateTime
-  hosts       String[] @default([])
+  hosts       String[]  @default([])
 
+  @@unique([type, groups, begin, code])
   @@index([code], type: Hash)
   @@index([type], type: Hash)
   @@index([begin(sort: Desc), code(sort: Desc)])
-  @@unique([type, groups, begin, code, hosts])
 }

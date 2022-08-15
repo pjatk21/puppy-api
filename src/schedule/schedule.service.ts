@@ -7,17 +7,29 @@ import {
 } from '@nestjs/common'
 import { DateTime } from 'luxon'
 import { PrismaService } from 'src/prisma/prisma.service'
-import { Prisma, ScheduledEvent } from '@prisma/client'
+import { EventType, Prisma, ScheduledEvent } from '@prisma/client'
 import { JSDOM } from 'jsdom'
+import { group } from 'console'
+
+export type ScheduledEventsQuery = {
+  groups?: string[]
+  hosts?: string[]
+  type?: EventType
+}
+
+export type ScheduledEventsRangeQuery = ScheduledEventsQuery & {
+  start: DateTime
+  end: DateTime
+}
 
 class Extractor {
   private readonly fragment: DocumentFragment
 
-  constructor(html: string) {
+  public constructor(html: string) {
     this.fragment = JSDOM.fragment(html)
   }
 
-  extract(id: string): string | null {
+  public extract(id: string): string | null {
     const text = this.fragment
       .querySelector(`[id*="${id}"]`)
       ?.textContent?.trim()
@@ -26,13 +38,13 @@ class Extractor {
     return text ?? null
   }
 
-  extractMany(id: string): string[] | null {
+  public extractMany(id: string): string[] | null {
     const data = this.extract(id)
     if (!data) return null
     return data.split(', ').map((s) => s.trim())
   }
 
-  extractDateTime(date: string, time: string): DateTime | null {
+  public extractDateTime(date: string, time: string): DateTime | null {
     const rawDate = this.extract(date)
     const rawTime = this.extract(time)
     if (!rawDate || !rawTime) return null
@@ -42,23 +54,38 @@ class Extractor {
 
 @Injectable()
 export class ScheduleService {
-  constructor(private readonly prisma: PrismaService) {}
+  public constructor(private readonly prisma: PrismaService) {}
 
-  async processShard(html: string): Promise<ScheduledEvent> {
+  /**
+   * Simple parser for processing fragments of HTML provided by scrapers.
+   * @param html HTML to be parsed.
+   * @return Direct parsed data from database.
+   */
+  public async processShard(html: string): Promise<ScheduledEvent> {
     const extractor = new Extractor(html)
 
-    const kind =
+    let describedType =
       extractor.extract('TypRezerwacjiLabel') ??
       extractor.extract('TypZajecLabel')
 
-    if (!kind) throw new BadRequestException('No type filed found')
+    if (!describedType) throw new BadRequestException('No type filed found')
+    describedType = describedType.toLowerCase()
+    const type: EventType =
+      (
+        {
+          ćwiczenia: 'workshop',
+          wykład: 'lecture',
+          egzamin: 'exam',
+        } as Record<string, EventType>
+      )[describedType] ?? 'other'
 
     try {
-      switch (kind.toLowerCase()) {
-        case 'ćwiczenia':
+      switch (type) {
+        case 'workshop':
+        case 'lecture':
           return this.prisma.scheduledEvent.create({
             data: {
-              type: 'workshop',
+              type,
               title: extractor.extract('NazwaPrzedmiotyLabel')!,
               code: extractor.extract('KodPrzedmiotuLabel')!,
               room: extractor.extract('SalaLabel')!,
@@ -72,10 +99,10 @@ export class ScheduleService {
               groups: extractor.extractMany('GrupyLabel') ?? [],
             },
           })
-        case 'egzamin':
+        case 'exam':
           return this.prisma.scheduledEvent.create({
             data: {
-              type: 'reservation',
+              type,
               title: extractor.extract('NazwyPrzedmiotowLabel')!,
               code: extractor.extract('KodyPrzedmiotowLabel')!,
               room: extractor.extract('SalaLabel')!,
@@ -90,7 +117,7 @@ export class ScheduleService {
             },
           })
         default:
-          throw new NotImplementedException()
+          throw new NotImplementedException(`Unknown type: ${describedType}`)
       }
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -99,5 +126,67 @@ export class ScheduleService {
       }
       throw e
     }
+  }
+
+  public async availableGroups(): Promise<string[]> {
+    const groupsArrays = await this.prisma.scheduledEvent.findMany({
+      select: {
+        groups: true,
+      },
+      distinct: ['groups'],
+    })
+    return groupsArrays.map((e) => e.groups).flat()
+  }
+
+  public async availableHosts(): Promise<string[]> {
+    const hostsArrays = await this.prisma.scheduledEvent.findMany({
+      select: {
+        hosts: true,
+      },
+      distinct: ['hosts'],
+    })
+    return hostsArrays.map((e) => e.hosts).flat()
+  }
+
+  public allEvents(query: ScheduledEventsQuery): Promise<ScheduledEvent[]> {
+    return this.prisma.scheduledEvent.findMany({
+      where: {
+        type: query.type,
+        OR: [
+          {
+            groups: {
+              hasSome: query.groups ?? [],
+            },
+          },
+          {
+            hosts: {
+              hasSome: query.hosts ?? [],
+            },
+          },
+        ],
+      },
+    })
+  }
+
+  public rangeEvents(query: ScheduledEventsRangeQuery) {
+    return this.prisma.scheduledEvent.findMany({
+      where: {
+        begin: { gte: query.start.toJSDate() },
+        end: { lte: query.end.toJSDate() },
+        type: query.type,
+        OR: [
+          {
+            groups: {
+              hasSome: query.groups ?? [],
+            },
+          },
+          {
+            hosts: {
+              hasSome: query.hosts ?? [],
+            },
+          },
+        ],
+      },
+    })
   }
 }
