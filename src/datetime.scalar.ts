@@ -10,7 +10,10 @@ export class DateTimeScalar implements CustomScalar<string, DateTime> {
     return DateTime.fromISO(value)
   }
 
-  serialize(value: DateTime): string {
+  serialize(value: DateTime | Date): string {
+    if (value instanceof Date) {
+      value = DateTime.fromJSDate(value)
+    }
     return value.toISO()
   }
 

@@ -2,10 +2,11 @@ scalar DateTime
 
 type Query {
   now: DateTime!
+  getEvent: [ScheduledEvent!]!
 }
 
 type Mutation {
-  processShard(rawShard: String!): ScheduledEvent
+  processFragment(html: String!): ScheduledEvent!
 }
 
 type ScheduledEvent {

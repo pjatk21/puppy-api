@@ -1,5 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { DateTime } from 'luxon'
+import { Args, Mutation, Resolver } from '@nestjs/graphql'
+import { ScheduleService } from './schedule.service'
 
 @Resolver()
-export class ScheduleResolver {}
+export class ScheduleResolver {
+  constructor(private readonly schedule: ScheduleService) {}
+
+  @Mutation()
+  processFragment(@Args('html') raw: string) {
+    return this.schedule.processShard(raw)
+  }
+}

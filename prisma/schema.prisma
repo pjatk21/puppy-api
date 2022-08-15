@@ -18,16 +18,16 @@ model ScheduledEvent {
   id          String   @id @default(cuid())
   title       String
   description String?
-  code        String?
+  code        String
   type        EventType @default(other)
-  groups      String[]
-  room        String?
+  groups      String[] @default([])
+  room        String
   begin       DateTime
   end         DateTime
-  hosts       String[]
+  hosts       String[] @default([])
 
   @@index([code], type: Hash)
   @@index([type], type: Hash)
   @@index([begin(sort: Desc), code(sort: Desc)])
-  @@unique([type, code, begin, end, groups, hosts, room])
+  @@unique([type, groups, begin, code, hosts])
 }
