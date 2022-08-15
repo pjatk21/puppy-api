@@ -1,6 +1,6 @@
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
-import path, { join } from 'path'
+import path from 'path'
 import fs from 'fs/promises'
 import {
   ApolloClient,
@@ -13,9 +13,9 @@ await yargs(hideBin(process.argv))
   .command(
     'upload',
     'Uploads a dump to the server over HTTP.',
-    (yargs) => yargs,
+    (yargs) => yargs.option('path', { type: 'string' }),
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    async () => {
+    async (options) => {
       const client = new ApolloClient({
         uri: 'http://localhost:3000/graphql',
         cache: new InMemoryCache(),
@@ -29,7 +29,7 @@ await yargs(hideBin(process.argv))
         }
       `
 
-      const dumpPath = path.join(process.cwd(), 'dump')
+      const dumpPath = options.path ?? path.join(process.cwd(), 'dump')
       const dates = await fs.readdir(dumpPath)
       for (const date of dates) {
         const datePath = path.join(dumpPath, date)
@@ -61,4 +61,5 @@ await yargs(hideBin(process.argv))
       }
     },
   )
+  .demandCommand()
   .parse()
