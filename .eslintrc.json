@@ -21,6 +21,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-misused-promises": "error",
     "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/explicit-member-accessibility": ["warn"],
     "prettier/prettier": "warn"
   },
   "ignorePatterns": [
