@@ -9,7 +9,6 @@ import { DateTime } from 'luxon'
 import { PrismaService } from 'src/prisma/prisma.service'
 import { EventType, Prisma, ScheduledEvent } from '@prisma/client'
 import { JSDOM } from 'jsdom'
-import { group } from 'console'
 
 export type ScheduledEventsQuery = {
   groups?: string[]
@@ -18,7 +17,7 @@ export type ScheduledEventsQuery = {
 }
 
 export type ScheduledEventsRangeQuery = ScheduledEventsQuery & {
-  start: DateTime
+  begin: DateTime
   end: DateTime
 }
 
@@ -171,7 +170,7 @@ export class ScheduleService {
   public rangeEvents(query: ScheduledEventsRangeQuery) {
     return this.prisma.scheduledEvent.findMany({
       where: {
-        begin: { gte: query.start.toJSDate() },
+        begin: { gte: query.begin.toJSDate() },
         end: { lte: query.end.toJSDate() },
         type: query.type,
         OR: [

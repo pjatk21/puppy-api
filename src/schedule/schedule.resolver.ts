@@ -1,5 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
-import { ScheduledEventsQuery, ScheduledEventsRangeQuery, ScheduleService } from './schedule.service'
+import {
+  ScheduledEventsQuery,
+  ScheduledEventsRangeQuery,
+  ScheduleService,
+} from './schedule.service'
 
 @Resolver()
 export class ScheduleResolver {
