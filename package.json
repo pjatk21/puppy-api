@@ -36,6 +36,7 @@
     "ts-morph": "^15.1.0"
   },
   "devDependencies": {
+    "@apollo/client": "^3.6.9",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
@@ -46,6 +47,7 @@
     "@types/luxon": "^3.0.0",
     "@types/node": "^16.0.0",
     "@types/supertest": "^2.0.11",
+    "@types/yargs": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.1",
@@ -60,7 +62,8 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "yargs": "^17.5.1"
   },
   "jest": {
     "moduleFileExtensions": [
