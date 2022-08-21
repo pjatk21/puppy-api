@@ -1,5 +1,5 @@
 type Subscription {
-  tasksDispositions(scraperId: ID!): ScrapTask
+  tasksDispositions: ScrapTask
 }
 
 enum TaskState {

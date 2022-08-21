@@ -32,3 +32,17 @@ model ScheduledEvent {
   @@index([type], type: Hash)
   @@index([begin(sort: Desc), code(sort: Desc)])
 }
+
+model Scrapper {
+  id     String          @id @default(uuid()) @db.Uuid
+  alias  String?
+  tokens ScrapperToken[]
+}
+
+model ScrapperToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  scrapper   Scrapper @relation(fields: [scrapperId], references: [id])
+  scrapperId String   @db.Uuid
+  when       DateTime @default(now())
+}

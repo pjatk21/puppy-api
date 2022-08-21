@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
-import { HypervisorResolver } from './hypervisor.resolver';
+import { Module } from '@nestjs/common'
+import { GqlScrapperAuthGuard } from 'src/gql-scrapper-token.guard'
+import { PrismaModule } from 'src/prisma/prisma.module'
+import { HypervisorResolver } from './hypervisor.resolver'
 
 @Module({
-  providers: [HypervisorResolver],
+  imports: [PrismaModule],
+  providers: [HypervisorResolver, GqlScrapperAuthGuard],
 })
 export class HypervisorModule {}
