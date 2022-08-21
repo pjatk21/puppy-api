@@ -33,10 +33,18 @@ model ScheduledEvent {
   @@index([begin(sort: Desc), code(sort: Desc)])
 }
 
+model User {
+  id       String     @id @default(uuid()) @db.Uuid
+  name     String?
+  Scrapper Scrapper[]
+}
+
 model Scrapper {
-  id     String          @id @default(uuid()) @db.Uuid
-  alias  String?
-  tokens ScrapperToken[]
+  id      String          @id @default(uuid()) @db.Uuid
+  alias   String?
+  owner   User            @relation(fields: [ownerId], references: [id])
+  ownerId String          @db.Uuid
+  tokens  ScrapperToken[]
 }
 
 model ScrapperToken {
