@@ -1,8 +1,13 @@
 type User {
   name: String!
   email: String!
+  groups: [String!]!
 }
 
 type Query {
   me: User!
+}
+
+type Mutation {
+  setGroups(groups: [String!]!): [String!]!
 }

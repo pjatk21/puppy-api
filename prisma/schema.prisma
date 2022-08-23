@@ -43,6 +43,7 @@ model User {
   id          String            @id @default(uuid()) @db.Uuid
   name        String
   email       String            @unique
+  groups      UserGroups[]
   scrappers   Scrapper[]
   sessions    UserSession[]
   permissions UserPermissions[]
@@ -61,6 +62,14 @@ model UserPermissions {
   permission Permission
 
   @@unique([userId, permission])
+}
+
+model UserGroups {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.Uuid
+  group  String
+
+  @@unique([userId, group])
 }
 
 model Scrapper {
