@@ -78,12 +78,15 @@ model Scrapper {
   owner   User            @relation(fields: [ownerId], references: [id])
   ownerId String          @db.Uuid
   tokens  ScrapperToken[]
+
+  @@unique([alias, ownerId])
 }
 
 model ScrapperToken {
-  id         Int      @id @default(autoincrement())
-  token      String   @unique
-  scrapper   Scrapper @relation(fields: [scrapperId], references: [id])
+  token      String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'base64')"))
+  scrapper   Scrapper @relation(fields: [scrapperId], references: [id], onDelete: Cascade)
   scrapperId String   @db.Uuid
   when       DateTime @default(now())
+
+  @@unique([token, scrapperId])
 }

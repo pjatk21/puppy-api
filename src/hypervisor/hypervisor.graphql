@@ -13,7 +13,18 @@ enum TaskState {
   DONE
 }
 
+type Scraper {
+  id: String!
+  alias: String
+  tokens: [ScraperToken!]!
+}
+
+type ScraperToken {
+  token: String!
+}
+
 type Mutation {
+  createScraper(alias: String): ScraperToken!
   updateOwnState(scraperId: ID!, state: String!): String!
   updateTaskState(taskId: ID!, state: String!): String!
   triggerTask(taskId: ID!): String!
