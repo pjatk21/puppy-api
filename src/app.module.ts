@@ -17,6 +17,7 @@ import { GqlScrapperAuthGuard } from './gql-scrapper-token.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config'
 import { Oauth2Module } from './oauth2/oauth2.module'
+import { UsersModule } from './users/users.module';
 import Joi from 'joi'
 
 @Module({
@@ -65,6 +66,7 @@ import Joi from 'joi'
         GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().exist(),
       }),
     }),
+    UsersModule,
   ],
   providers: [DateTimeScalar],
 })
