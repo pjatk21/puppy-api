@@ -15,6 +15,12 @@ enum EventType {
   other
 }
 
+enum Permission {
+  admin
+  scrappersCrud
+  scrappersRead
+}
+
 model ScheduledEvent {
   id          String    @id @default(cuid())
   title       String
@@ -34,9 +40,27 @@ model ScheduledEvent {
 }
 
 model User {
-  id       String     @id @default(uuid()) @db.Uuid
-  name     String?
-  Scrapper Scrapper[]
+  id          String            @id @default(uuid()) @db.Uuid
+  name        String
+  email       String            @unique
+  scrappers   Scrapper[]
+  sessions    UserSession[]
+  permissions UserPermissions[]
+}
+
+model UserSession {
+  token        String   @id @unique @default(dbgenerated("encode(gen_random_bytes(384), 'base64')"))
+  user         User     @relation(fields: [userId], references: [id])
+  userId       String   @db.Uuid
+  expiresAfter DateTime @default(dbgenerated("now() + interval '1 week'"))
+}
+
+model UserPermissions {
+  user       User       @relation(fields: [userId], references: [id])
+  userId     String     @db.Uuid
+  permission Permission
+
+  @@unique([userId, permission])
 }
 
 model Scrapper {
