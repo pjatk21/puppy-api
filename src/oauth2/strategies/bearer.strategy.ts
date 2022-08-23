@@ -4,7 +4,7 @@ import { UsersService } from 'src/users/users.service'
 import { Strategy } from 'passport-http-bearer'
 
 @Injectable()
-export class BearerStrategy extends PassportStrategy(Strategy) {
+export class BearerStrategy extends PassportStrategy(Strategy, 'bearer') {
   public constructor(private readonly users: UsersService) {
     super()
   }

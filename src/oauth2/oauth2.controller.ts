@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Redirect, Req, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UsersService } from 'src/users/users.service'
-import { SafeProfile } from './google.strategy'
+import { SafeProfile } from './strategies/google.strategy'
 
 @Controller('oauth')
 export class Oauth2Controller {

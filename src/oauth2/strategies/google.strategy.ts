@@ -41,13 +41,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         stripUnknown: true,
       })
 
-    // const user = await this.users.getOrCreateUser({
-    //   email: safeProfile.emails[0].value,
-    //   name: safeProfile.displayName,
-    // })
-
-    //console.log(safeProfile, user)
-
     return safeProfile
   }
 }
