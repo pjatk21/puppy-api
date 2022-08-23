@@ -14,6 +14,8 @@ import { DateTimeScalar } from './datetime.scalar'
 import { HypervisorModule } from './hypervisor/hypervisor.module'
 import { PrismaService } from './prisma/prisma.service'
 import { GqlScrapperAuthGuard } from './gql-scrapper-token.guard'
+import { ConfigModule } from '@nestjs/config'
+import Joi from 'joi'
 
 @Module({
   imports: [
@@ -44,6 +46,18 @@ import { GqlScrapperAuthGuard } from './gql-scrapper-token.guard'
     PuppiesModule,
     ScheduleModule,
     HypervisorModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        GOOGLE_OAUTH_CALLBACK_URL: Joi.string()
+          .uri({
+            scheme: ['http', 'https'],
+          })
+          .exist(),
+        GOOGLE_OAUTH_CLIENT_ID: Joi.string().exist(),
+        GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().exist(),
+      }),
+    }),
   ],
   providers: [DateTimeScalar],
 })
