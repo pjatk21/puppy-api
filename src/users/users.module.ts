@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { PrismaModule } from 'src/prisma/prisma.module'
 import { UsersService } from './users.service'
+import { UsersResolver } from './users.resolver';
 
 export type UserInfo = {
   email: string
@@ -9,7 +10,7 @@ export type UserInfo = {
 
 @Module({
   imports: [PrismaModule],
-  providers: [UsersService],
+  providers: [UsersService, UsersResolver],
   exports: [UsersService],
 })
 export class UsersModule {}
