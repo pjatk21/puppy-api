@@ -16,7 +16,6 @@ enum TaskState {
 type Scraper {
   id: String!
   alias: String
-  tokens: [ScraperToken!]!
 }
 
 type ScraperToken {
