@@ -50,7 +50,7 @@ model User {
 }
 
 model UserSession {
-  token        String   @id @unique @default(dbgenerated("encode(gen_random_bytes(384), 'base64')"))
+  token        String   @id @unique @default(dbgenerated("encode(gen_random_bytes(384), 'hex')"))
   user         User     @relation(fields: [userId], references: [id])
   userId       String   @db.Uuid
   expiresAfter DateTime @default(dbgenerated("now() + interval '1 week'"))
@@ -83,7 +83,7 @@ model Scrapper {
 }
 
 model ScrapperToken {
-  token      String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'base64')"))
+  token      String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'hex')"))
   scrapper   Scrapper @relation(fields: [scrapperId], references: [id], onDelete: Cascade)
   scrapperId String   @db.Uuid
   when       DateTime @default(now())
