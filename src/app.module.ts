@@ -57,11 +57,11 @@ import Joi from 'joi'
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        GOOGLE_OAUTH_CALLBACK_URL: Joi.string()
-          .uri({
-            scheme: ['http', 'https'],
-          })
-          .exist(),
+        //GOOGLE_OAUTH_CALLBACK_URL: Joi.string()
+        //  .uri({
+        //    scheme: ['http', 'https'],
+        //  })
+        //  .exist(),
         GOOGLE_OAUTH_CLIENT_ID: Joi.string().exist(),
         GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().exist(),
       }),

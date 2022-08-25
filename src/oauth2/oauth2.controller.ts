@@ -1,20 +1,29 @@
-import { Controller, Get, Post, Redirect, Req, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { UsersService } from 'src/users/users.service'
-import { SafeProfile } from './strategies/google.strategy'
+import { Oauth2Service } from './oauth2.service'
 
 @Controller('oauth')
 export class Oauth2Controller {
-  public constructor(private readonly users: UsersService) {}
+  public constructor(
+    private readonly users: UsersService,
+    private readonly oauth2: Oauth2Service,
+  ) {}
 
   @Get('google')
-  @UseGuards(AuthGuard('google'))
-  public async googleAuth(@Req() req) {
-    const profile: SafeProfile = req.user
-    const { user, session } = await this.users.loginUser({
-      name: profile.displayName,
-      email: profile.emails[0].value,
-    })
+  public async googleAuth(@Query('code') code?: string) {
+    if (!code) throw new BadRequestException('Missing code param.')
+
+    const profile = await this.oauth2.googleCodeVerify(code)
+
+    const { user, session } = await this.users.loginUser(profile)
     return { user, session }
   }
 
