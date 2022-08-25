@@ -26,10 +26,4 @@ export class Oauth2Controller {
     const { user, session } = await this.users.loginUser(profile)
     return { user, session }
   }
-
-  @Post('google')
-  @UseGuards(AuthGuard('google'))
-  public googleAuthRedirect() {
-    return
-  }
 }
