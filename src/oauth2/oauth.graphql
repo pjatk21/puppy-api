@@ -1,0 +1,13 @@
+type Session {
+  token: String!
+  userId: String!
+  expiresAfter: DateTime!
+}
+
+type OAuth2 {
+  google(code: String!): Session!
+}
+
+type Mutation {
+  oauth2: OAuth2!
+}
