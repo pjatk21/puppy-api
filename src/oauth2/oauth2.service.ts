@@ -26,9 +26,9 @@ export class Oauth2Service {
   public async googleCodeVerify(code: string) {
     const { tokens } = await this.googleAuth2.getToken(code)
     this.googleAuth2.setCredentials(tokens)
-    const profile = await this.googleAuth2.request({
+    const { data } = await this.googleAuth2.request({
       url: 'https://www.googleapis.com/oauth2/v3/userinfo',
     })
-    return plainToInstance(GoogleProfile, profile)
+    return plainToInstance(GoogleProfile, data)
   }
 }
