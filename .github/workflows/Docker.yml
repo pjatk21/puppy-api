@@ -6,11 +6,6 @@ on:
       - "v*"
     branches:
       - "main"
-  workflow_run:
-    types:
-      - completed
-    workflows:
-      - pjatk21/puppy-spa/Docker
 
 jobs:
   build:
