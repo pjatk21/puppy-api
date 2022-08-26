@@ -32,22 +32,22 @@ jobs:
             ghcr.io/pjatk21/puppy-api:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  deploy:
-    runs-on: ubuntu-latest
-    needs:
-      - build
-    steps:
-      - name: Install openssh
-        run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
-      - name: Set up WireGuard
-        uses: egor-tensin/setup-wireguard@v1
-        with:
-          endpoint: '${{ secrets.WG_ENDPOINT }}'
-          endpoint_public_key: '${{ secrets.WG_ENDPOINT_PUBLIC }}'
-          ips: '${{ secrets.WG_IPS }}'
-          allowed_ips: '${{ secrets.WG_ALLOWED_IPS }}'
-          private_key: '${{ secrets.WG_PRIVATEKEY }}'
-          preshared_key: '${{ secrets.WG_PRESHAREDKEY }}'
-      - name: Deploy
-        run: |
-          sshpass -p ${{ secrets.SSH_PASSWD }} ssh -oStrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ~ && docker pull ghcr.io/pjatk21/puppy-api:latest'
+  #deploy:
+  #  runs-on: ubuntu-latest
+  #  needs:
+  #    - build
+  #  steps:
+  #    - name: Install openssh
+  #      run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
+  #    - name: Set up WireGuard
+  #      uses: egor-tensin/setup-wireguard@v1
+  #      with:
+  #        endpoint: '${{ secrets.WG_ENDPOINT }}'
+  #        endpoint_public_key: '${{ secrets.WG_ENDPOINT_PUBLIC }}'
+  #        ips: '${{ secrets.WG_IPS }}'
+  #        allowed_ips: '${{ secrets.WG_ALLOWED_IPS }}'
+  #        private_key: '${{ secrets.WG_PRIVATEKEY }}'
+  #        preshared_key: '${{ secrets.WG_PRESHAREDKEY }}'
+  #    - name: Deploy
+  #      run: |
+  #        sshpass -p ${{ secrets.SSH_PASSWD }} ssh -oStrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ~ && docker pull ghcr.io/pjatk21/puppy-api:latest'
