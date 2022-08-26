@@ -32,7 +32,6 @@ jobs:
             ghcr.io/pjatk21/puppy-api:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          args: --build-arg VITE_GOOGLE_CLIENTID="${{ secrets.PUPPY_GOOGLE_CLIENTID }}"
   deploy:
     runs-on: ubuntu-latest
     needs:
