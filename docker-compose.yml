@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  api:
+    image: ghcr.io/pjatk21/puppy-api:latest
+    ports:
+      - '3000:3000'
+    env_file:
+      - .google.env
+      - .postgres.env
+  database:
+    image: postgres:latest
+    env_file:
+      - .postgres.env
+
