@@ -10,7 +10,7 @@ on:
     types:
       - completed
     workflows:
-      - pjatk21/puppy-spa/.github/workflows/Docker.yml
+      - pjatk21/puppy-spa/Docker
 
 jobs:
   build:
