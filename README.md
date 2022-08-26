@@ -47,3 +47,27 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
   W tym projekcie zostanie zaimplementowana obsługa SSR dla *landing page*. Aplikacja do planu zajęć pozostanie jako SPA.
 
 </details>
+
+## Uruchamianie
+
+### Pierwszwe uruchomienie oraz aktualizacje
+
+```bash
+git clone https://github.com/pjatk21/puppy-api puppy && cd puppy
+cp docker/examples/.*.env .
+# tutaj uzupełnij swoje klucze
+docker-compose pull
+docker-compose run --rm -it api 'yarn add -D prisma && yarn prisma migrate deploy'
+```
+
+### Uruchamianie aplikacji
+
+```bash
+docker-compose up -d
+```
+
+### Podłączanie scrapperów
+
+```
+docker run --rm -d -e PUPPY_GATEWAY="https://puppy.kpostek.dev" -e SCRAPER_TOKEN="<token scrapera>" ghcr.io/pjatk21/puppy-scraper
+```

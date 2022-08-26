@@ -27,6 +27,7 @@ WORKDIR /app/puppy-api
 COPY package.json yarn.lock ./
 COPY --from=builder /app/puppy-api/node_modules ./node_modules
 COPY --from=builder /app/puppy-api/dist ./dist
+COPY --from=builder /app/puppy-api/prisma ./prisma
 COPY --from=builder /app/puppy-api/src/**/*.graphql ./src/
 COPY --from=builder /app/puppy-api/src/**/*.gql ./src/
 

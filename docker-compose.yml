@@ -3,13 +3,16 @@ version: '3'
 services:
   api:
     image: ghcr.io/pjatk21/puppy-api:latest
+    depends_on:
+      - database
     ports:
       - '3000:3000'
     env_file:
       - .google.env
       - .postgres.env
+    restart: unless-stopped
   database:
     image: postgres:latest
     env_file:
       - .postgres.env
-
+    restart: unless-stopped
