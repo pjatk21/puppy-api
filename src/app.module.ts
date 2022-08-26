@@ -44,9 +44,19 @@ import Joi from 'joi'
           'subscriptions-transport-ws': true,
         },
         plugins: [
-          ApolloServerPluginLandingPageLocalDefault({ footer: false }),
-          // ApolloServerPluginLandingPageProductionDefault({ footer: false }),
+          process.env.NODE_ENV === 'production'
+            ? ApolloServerPluginLandingPageProductionDefault({
+                footer: false,
+                // @ts-expect-error Apollo mistype
+                embed: true,
+                headers: {
+                  Authorization: 'Bearer <token>',
+                },
+              })
+            : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
         ],
+        introspection: true,
+        cache: 'bounded',
       }),
     }),
     PrismaModule,
