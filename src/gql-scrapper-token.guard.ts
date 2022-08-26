@@ -15,22 +15,25 @@ export class GqlScrapperAuthGuard implements CanActivate {
   public async canActivate(context: ExecutionContext) {
     const gqlContext = GqlExecutionContext.create(context)
 
-    const { scrapperToken } = gqlContext.getContext()
+    const { Authorization: authHeader } = gqlContext.getContext() as Partial<{ Authorization: string }> & Record<string, unknown>
 
-    if (!scrapperToken) return false
+    if (!authHeader) return false
+    const [tokenType, token] = authHeader.split(' ')
 
-    const scrapper = await this.prisma.scrapper.findFirst({
+    if (tokenType !== 'Scraper') return false
+
+    const scraper = await this.prisma.scrapper.findFirst({
       where: {
         tokens: {
           some: {
-            token: gqlContext.getContext().scrapperToken,
+            token,
           },
         },
       },
     })
 
     const c = gqlContext.getContext()
-    c.scrapper = scrapper
+    c.scraper = scraper
     return true
   }
 }
