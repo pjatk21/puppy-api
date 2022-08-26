@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 import {
   GqlScraperAuthGuard,
   CurrentScraper,
-} from 'src/gql-scrapper-token.guard'
+} from 'src/gql-scraper-token.guard'
 import { BearerGuard } from 'src/oauth2/guards/gql/bearer.guard'
 import { CurrentUser } from 'src/users/decorators/gql.decorator'
 import { HypervisorService } from './hypervisor.service'
