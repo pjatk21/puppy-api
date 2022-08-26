@@ -38,7 +38,7 @@ jobs:
       - build
     steps:
       - name: Install openssh
-        run: sudo apt-get update && sudo apt-get install -y openssh-client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client sshpass
       - name: Set up WireGuard
         uses: egor-tensin/setup-wireguard@v1
         with:
@@ -48,3 +48,6 @@ jobs:
           allowed_ips: '${{ secrets.WG_ALLOWED_IPS }}'
           private_key: '${{ secrets.WG_PRIVATEKEY }}'
           preshared_key: '${{ secrets.WG_PRESHAREDKEY }}'
+      - name: Deploy
+        run: |
+          sshpass -p ${{ secrets.SSH_PASSWD }} ssh -oStrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ~ && docker pull ghcr.io/pjatk21/puppy-api:latest'
