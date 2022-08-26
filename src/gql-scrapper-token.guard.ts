@@ -15,7 +15,7 @@ export class GqlScrapperAuthGuard implements CanActivate {
   public async canActivate(context: ExecutionContext) {
     const gqlContext = GqlExecutionContext.create(context)
 
-    const { Authorization: authHeader } = gqlContext.getContext() as Partial<{ Authorization: string }> & Record<string, unknown>
+    const { Authorization: authHeader } = gqlContext.getContext().connectionParams as Partial<{ Authorization: string }> & Record<string, unknown>
 
     if (!authHeader) return false
     const [tokenType, token] = authHeader.split(' ')
@@ -39,5 +39,5 @@ export class GqlScrapperAuthGuard implements CanActivate {
 }
 
 export const CurrentScrapper = createParamDecorator((data, ctx) => {
-  return GqlExecutionContext.create(ctx).getContext().scrapper
+  return GqlExecutionContext.create(ctx).getContext().scraper
 })

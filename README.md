@@ -70,5 +70,5 @@ docker-compose up -d
 ### Podłączanie scrapperów
 
 ```
-docker run --rm -d -e PUPPY_GATEWAY="https://puppy.kpostek.dev" -e SCRAPER_TOKEN="<token scrapera>" ghcr.io/pjatk21/puppy-scraper
+docker run --rm -d -e PUPPY_GATEWAY="https://puppy.kpostek.dev" -e SCRAPER_TOKEN="<token scrapera>" ghcr.io/pjatk21/puppy-scrapy
 ```
