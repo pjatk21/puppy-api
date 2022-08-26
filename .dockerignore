@@ -6,3 +6,5 @@ node_modules/
 .git/
 .vscode/
 Dockerfile
+docker-compose.yml
+docker-compose.*.yml

@@ -57,7 +57,8 @@ git clone https://github.com/pjatk21/puppy-api puppy && cd puppy
 cp docker/examples/.*.env .
 # tutaj uzupełnij swoje klucze
 docker-compose pull
-docker-compose run --rm -it api 'yarn add -D prisma && yarn prisma migrate deploy'
+docker-compose up -d database
+docker-compose run --rm api yarn prisma migrate deploy
 ```
 
 ### Uruchamianie aplikacji
