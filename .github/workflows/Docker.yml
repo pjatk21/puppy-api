@@ -28,8 +28,8 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/pjatk21/puppy-spa:latest
-            ghcr.io/pjatk21/puppy-spa:${{ github.ref_name }}
+            ghcr.io/pjatk21/puppy-api:latest
+            ghcr.io/pjatk21/puppy-api:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           args: --build-arg VITE_GOOGLE_CLIENTID="${{ secrets.PUPPY_GOOGLE_CLIENTID }}"
