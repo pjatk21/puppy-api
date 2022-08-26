@@ -7,7 +7,7 @@ export class HypervisorService {
   public constructor(private readonly prisma: PrismaService) {}
 
   public createScraper(user: User, alias?: string) {
-    return this.prisma.scrapper.create({
+    return this.prisma.scraper.create({
       data: {
         alias,
         ownerId: user.id,

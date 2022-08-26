@@ -19,8 +19,8 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
    - ICS (`/ics`)
  - Dodanie obsługi kont dla studentów (poprzez Google Identification Services), przechowujące informacje o:
    - Grupach studenckich
-   - Prywatnych scrapperach
- - *GraphQL over WS* jako protokół komunikacji dla scrapperów
+   - Prywatnych scraperach
+ - *GraphQL over WS* jako protokół komunikacji dla scraperów
  - <small>szczeniaczki</small> 🐾 🐶 🥺
 
 <details>
@@ -29,8 +29,8 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
   #### Baza danych
   W Altapi wykorzystywana była biblioteka `mongoose` (wraz z MongoDB). Zostanie ona zastąpiona przez ORM [Prisma](https://www.prisma.io/) wraz z Postgres.
 
-  #### Scrappery
-  Altapi było pozbawione jakiejkolwiek autentykacji czy autoryzacji. Scrappery były wewnątrz zaufanej sieci i całe dostarczanie danych było oparte wyłącznie o zaufanie. Tym razem każdy scrapper będzie miał przypisanego właściciela.
+  #### Scrapery
+  Altapi było pozbawione jakiejkolwiek autentykacji czy autoryzacji. Scrapery były wewnątrz zaufanej sieci i całe dostarczanie danych było oparte wyłącznie o zaufanie. Tym razem każdy scraper będzie miał przypisanego właściciela.
 
   #### Konwencje
   Poprzedni projekt całkowicie był napisany w konwencji *code first*. W tym projekcie jednak została zastosowana konwencja *schema first*, ponieważ brak dobrego *type reflection* w TypeScript utrudnia pracę na dłuższą metę.
@@ -41,7 +41,7 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
   Mimo, że NestJS, framework który został wykorzystany do tworzenia aplikacji, wykorzystuje domyślnie CommonJS, w tym projekcie wszystko wykorzystuje ES Modules oraz targetuje w najnowsze wersje Node'a.
 
   #### WASI/WASM (feat. Rust)
-  W stabilnej fazie projektu zostaną zaimplementowane moduły WASI/WASM obsługę parsowania HTML'a zapewniające otrzymanego z scrappera.
+  W stabilnej fazie projektu zostaną zaimplementowane moduły WASI/WASM obsługę parsowania HTML'a zapewniające otrzymanego z scrapera.
 
   #### SSR (feat. Vite)
   W tym projekcie zostanie zaimplementowana obsługa SSR dla *landing page*. Aplikacja do planu zajęć pozostanie jako SPA.
@@ -67,7 +67,7 @@ docker-compose run --rm api yarn prisma migrate deploy
 docker-compose up -d
 ```
 
-### Podłączanie scrapperów
+### Podłączanie scraperów
 
 ```
 docker run --rm -d -e PUPPY_GATEWAY="https://puppy.kpostek.dev" -e SCRAPER_TOKEN="<token scrapera>" ghcr.io/pjatk21/puppy-scrapy

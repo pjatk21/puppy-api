@@ -28,7 +28,7 @@ export class UsersResolver {
 
   @ResolveField('scrapers')
   public async scrapers(@CurrentUser() user: User) {
-    return this.prisma.scrapper.findMany({
+    return this.prisma.scraper.findMany({
       where: {
         ownerId: user.id,
       },

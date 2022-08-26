@@ -17,8 +17,8 @@ enum EventType {
 
 enum Permission {
   admin
-  scrappersCrud
-  scrappersRead
+  scrapersCrud
+  scrapersRead
 }
 
 model ScheduledEvent {
@@ -44,7 +44,7 @@ model User {
   name        String
   email       String            @unique
   groups      UserGroups[]
-  scrappers   Scrapper[]
+  scrapers   Scraper[]
   sessions    UserSession[]
   permissions UserPermissions[]
 }
@@ -72,21 +72,21 @@ model UserGroups {
   @@unique([userId, group])
 }
 
-model Scrapper {
+model Scraper {
   id      String          @id @default(uuid()) @db.Uuid
   alias   String?
   owner   User            @relation(fields: [ownerId], references: [id])
   ownerId String          @db.Uuid
-  tokens  ScrapperToken[]
+  tokens  ScraperToken[]
 
   @@unique([alias, ownerId])
 }
 
-model ScrapperToken {
+model ScraperToken {
   token      String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'hex')"))
-  scrapper   Scrapper @relation(fields: [scrapperId], references: [id], onDelete: Cascade)
-  scrapperId String   @db.Uuid
+  scraper   Scraper @relation(fields: [scraperId], references: [id], onDelete: Cascade)
+  scraperId String   @db.Uuid
   when       DateTime @default(now())
 
-  @@unique([token, scrapperId])
+  @@unique([token, scraperId])
 }

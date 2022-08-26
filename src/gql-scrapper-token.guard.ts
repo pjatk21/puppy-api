@@ -9,7 +9,7 @@ import { GqlExecutionContext } from '@nestjs/graphql'
 import { PrismaService } from './prisma/prisma.service'
 
 @Injectable()
-export class GqlScrapperAuthGuard implements CanActivate {
+export class GqlScraperAuthGuard implements CanActivate {
   public constructor(private readonly prisma: PrismaService) {}
 
   public async canActivate(context: ExecutionContext) {
@@ -22,7 +22,7 @@ export class GqlScrapperAuthGuard implements CanActivate {
 
     if (tokenType !== 'Scraper') return false
 
-    const scraper = await this.prisma.scrapper.findFirst({
+    const scraper = await this.prisma.scraper.findFirst({
       where: {
         tokens: {
           some: {
@@ -38,6 +38,6 @@ export class GqlScrapperAuthGuard implements CanActivate {
   }
 }
 
-export const CurrentScrapper = createParamDecorator((data, ctx) => {
+export const CurrentScraper = createParamDecorator((data, ctx) => {
   return GqlExecutionContext.create(ctx).getContext().scraper
 })

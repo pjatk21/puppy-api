@@ -13,7 +13,7 @@ import { ScheduleModule } from './schedule/schedule.module'
 import { DateTimeScalar } from './datetime.scalar'
 import { HypervisorModule } from './hypervisor/hypervisor.module'
 import { PrismaService } from './prisma/prisma.service'
-import { GqlScrapperAuthGuard } from './gql-scrapper-token.guard'
+import { GqlScraperAuthGuard } from './gql-scrapper-token.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config'
 import { Oauth2Module } from './oauth2/oauth2.module'
@@ -37,7 +37,6 @@ import Joi from 'joi'
         playground: false,
         context: (context) => ({
           ...context,
-          scrapperToken: context.connectionParams?.scrapperToken ?? null,
         }),
         subscriptions: {
           'graphql-ws': true,

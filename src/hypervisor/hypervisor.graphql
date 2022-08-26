@@ -3,11 +3,11 @@ type Subscription {
 }
 
 enum TaskState {
-  """Task is looking for a scrapper that can execute it."""
+  """Task is looking for a scraper that can execute it."""
   WAITING
-  """Task is being executed by a scrapper."""
+  """Task is being executed by a scraper."""
   RUNNING
-  """All available scrappers rejected task execution."""
+  """All available scrapers rejected task execution."""
   REJECTED
   """Task execution finished."""
   DONE

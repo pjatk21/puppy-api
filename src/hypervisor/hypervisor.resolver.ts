@@ -1,18 +1,17 @@
 import { ScrapTask, TaskState } from '@auto/graphql'
 import { Logger, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql'
-import { Scrapper, User } from '@prisma/client'
+import { Scraper, User } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { PubSub } from 'graphql-subscriptions'
 import { DateTime } from 'luxon'
 import {
-  GqlScrapperAuthGuard,
-  CurrentScrapper,
+  GqlScraperAuthGuard,
+  CurrentScraper,
 } from 'src/gql-scrapper-token.guard'
 import { BearerGuard } from 'src/oauth2/guards/gql/bearer.guard'
 import { CurrentUser } from 'src/users/decorators/gql.decorator'
 import { HypervisorService } from './hypervisor.service'
-import { ScrapperTriggers } from './hypervisor.triggers'
 
 @Resolver()
 export class HypervisorResolver {
@@ -21,12 +20,12 @@ export class HypervisorResolver {
 
   public constructor(private readonly hypervisor: HypervisorService) {}
 
-  @UseGuards(GqlScrapperAuthGuard)
+  @UseGuards(GqlScraperAuthGuard)
   @Subscription()
-  public tasksDispositions(@CurrentScrapper() scrapper: Scrapper) {
+  public tasksDispositions(@CurrentScraper() scraper: Scraper) {
     this.logger.verbose(
-      `Scrapper "${
-        scrapper.alias ?? scrapper.id
+      `Scraper "${
+        scraper.alias ?? scraper.id
       }" is subscribing to tasks dispositions!`,
     )
     return this.pubsub.asyncIterator('scrapTask')
@@ -56,8 +55,8 @@ export class HypervisorResolver {
     @CurrentUser() user: User,
     @Args('alias') alias?: string,
   ) {
-    const scrapper = await this.hypervisor.createScraper(user, alias)
-    const [token] = scrapper.tokens
+    const scraper = await this.hypervisor.createScraper(user, alias)
+    const [token] = scraper.tokens
     return token
   }
 }
