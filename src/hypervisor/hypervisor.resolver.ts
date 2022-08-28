@@ -37,7 +37,7 @@ export class HypervisorResolver {
       name: 'test',
       state: TaskState.WAITING,
       since: DateTime.now(),
-      until: DateTime.now().plus({ months: 3 }),
+      until: DateTime.now().plus({ months: 6 }),
     }
   }
 
