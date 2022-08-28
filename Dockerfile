@@ -6,7 +6,11 @@ COPY package.json yarn.lock ./
 
 RUN yarn
 
-COPY . .
+COPY tsconfig.json tsconfig.build.json nest-cli.json ./
+
+COPY ./src ./src
+
+COPY ./prisma ./prisma
 
 RUN yarn prisma generate
 
@@ -24,7 +28,7 @@ COPY ./spa/package.json ./spa/yarn.lock ./
 
 RUN yarn install
 
-COPY ./spa .
+COPY ./spa ./
 
 RUN yarn build
 
