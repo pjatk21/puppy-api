@@ -18,6 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config'
 import { Oauth2Module } from './oauth2/oauth2.module'
 import { UsersModule } from './users/users.module'
+import { AppResolver } from './app/app.resolver';
 import Joi from 'joi'
 
 @Module({
@@ -77,6 +78,6 @@ import Joi from 'joi'
     }),
     UsersModule,
   ],
-  providers: [DateTimeScalar],
+  providers: [DateTimeScalar, AppResolver],
 })
 export class AppModule {}

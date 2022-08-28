@@ -23,6 +23,30 @@ export enum EventType {
     other = "other"
 }
 
+export class App {
+    version: string;
+}
+
+export abstract class IQuery {
+    abstract app(): App | Promise<App>;
+
+    abstract allPuppies(): Puppy[] | Promise<Puppy[]>;
+
+    abstract puppy(id: string): Nullable<Puppy> | Promise<Nullable<Puppy>>;
+
+    abstract puppies(id: string[]): Puppy[] | Promise<Puppy[]>;
+
+    abstract availableGroups(): string[] | Promise<string[]>;
+
+    abstract availableHosts(): string[] | Promise<string[]>;
+
+    abstract allEvents(groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
+
+    abstract rangeEvents(begin: DateTime, end: DateTime, groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
+
+    abstract me(): User | Promise<User>;
+}
+
 export abstract class ISubscription {
     abstract tasksDispositions(): Nullable<ScrapTask> | Promise<Nullable<ScrapTask>>;
 }
@@ -76,24 +100,6 @@ export class Puppy {
     id: string;
     name: string;
     age: number;
-}
-
-export abstract class IQuery {
-    abstract allPuppies(): Puppy[] | Promise<Puppy[]>;
-
-    abstract puppy(id: string): Nullable<Puppy> | Promise<Nullable<Puppy>>;
-
-    abstract puppies(id: string[]): Puppy[] | Promise<Puppy[]>;
-
-    abstract availableGroups(): string[] | Promise<string[]>;
-
-    abstract availableHosts(): string[] | Promise<string[]>;
-
-    abstract allEvents(groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
-
-    abstract rangeEvents(begin: DateTime, end: DateTime, groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
-
-    abstract me(): User | Promise<User>;
 }
 
 export class ScheduledEvent {

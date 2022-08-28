@@ -1,0 +1,7 @@
+type App {
+  version: String!
+}
+
+type Query {
+  app: App!
+}
