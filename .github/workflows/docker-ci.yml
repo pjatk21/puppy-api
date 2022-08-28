@@ -1,4 +1,4 @@
-name: Docker
+name: Docker CI
 
 on:
   push:
@@ -32,8 +32,7 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/pjatk21/puppy-api:latest
-            ghcr.io/pjatk21/puppy-api:${{ github.ref_name }}
+            ghcr.io/pjatk21/puppy-api:${{ github.ref_name == 'main' && 'latest' || '${{ github.ref_name }}' }}
           cache-from: type=registry,ref=ghcr.io/pjatk21/puppy-api:buildcache
           cache-to: type=registry,ref=ghcr.io/pjatk21/puppy-api:buildcache,mode=max
           build-args: |
