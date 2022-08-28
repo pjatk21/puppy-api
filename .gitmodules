@@ -1,3 +1,4 @@
 [submodule "spa"]
 	path = spa
 	url = ../puppy-spa
+	branch = main
