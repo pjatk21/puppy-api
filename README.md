@@ -17,6 +17,7 @@ Puppy adresuje problemy związane z [Altapi](https://github.com/pjatk21/altapi)
    - GraphQL API (`/graphql`)
    - REST API (`/rest/v1`)
    - ICS (`/ics`)
+   - Google Calendar
  - Dodanie obsługi kont dla studentów (poprzez Google Identification Services), przechowujące informacje o:
    - Grupach studenckich
    - Prywatnych scraperach
