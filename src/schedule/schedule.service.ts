@@ -164,6 +164,12 @@ export class ScheduleService {
           },
         ],
       },
+      orderBy: [
+        {
+          begin: 'asc',
+        },
+        { code: 'asc' },
+      ],
     })
   }
 
@@ -186,6 +192,7 @@ export class ScheduleService {
           },
         ],
       },
+      orderBy: [{ begin: 'asc' }, { code: 'asc' }],
     })
   }
 }
