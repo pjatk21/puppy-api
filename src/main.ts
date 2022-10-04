@@ -5,12 +5,16 @@ import {
 } from '@nestjs/platform-express'
 import { AppModule } from './app.module'
 
-const adapter = new ExpressAdapter()
-adapter.disable('x-powered-by')
+async function bootstrap() {
+  const adapter = new ExpressAdapter()
+  adapter.disable('x-powered-by')
 
-const app = await NestFactory.create<NestExpressApplication>(
-  AppModule,
-  adapter,
-  { cors: true },
-)
-await app.listen(3000)
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule,
+    adapter,
+    { cors: true },
+  )
+  await app.listen(3000)
+}
+
+void bootstrap()
