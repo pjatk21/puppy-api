@@ -114,6 +114,11 @@ export class ScheduledEvent {
     type: EventType;
 }
 
+export class ScheduledDay {
+    date: string;
+    events: ScheduledEvent[];
+}
+
 export class User {
     name: string;
     email: string;
