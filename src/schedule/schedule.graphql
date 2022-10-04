@@ -31,3 +31,8 @@ type ScheduledEvent {
   room: String!
   type: EventType!
 }
+
+type ScheduledDay {
+  date: String!
+  events: [ScheduledEvent!]!
+}
