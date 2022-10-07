@@ -1,15 +1,15 @@
 import { NestFactory } from '@nestjs/core'
 import {
-  ExpressAdapter,
-  NestExpressApplication,
-} from '@nestjs/platform-express'
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify'
 import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const adapter = new ExpressAdapter()
-  adapter.disable('x-powered-by')
+  const adapter = new FastifyAdapter()
+  // adapter.disable('x-powered-by')
 
-  const app = await NestFactory.create<NestExpressApplication>(
+  const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     adapter,
     { cors: true },

@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { PrismaService } from './prisma/prisma.service'
+import {} from '@nestjs/mercurius'
 
 @Injectable()
 export class GqlScraperAuthGuard implements CanActivate {
@@ -15,7 +16,9 @@ export class GqlScraperAuthGuard implements CanActivate {
   public async canActivate(context: ExecutionContext) {
     const gqlContext = GqlExecutionContext.create(context)
 
-    const { Authorization: authHeader } = gqlContext.getContext().connectionParams as Partial<{ Authorization: string }> & Record<string, unknown>
+    console.log(Object.keys(gqlContext.getContext()))
+
+    const { Authorization: authHeader } = gqlContext.getContext()._connectionInit
 
     if (!authHeader) return false
     const [tokenType, token] = authHeader.split(' ')
@@ -31,6 +34,7 @@ export class GqlScraperAuthGuard implements CanActivate {
         },
       },
     })
+    console.log(scraper)
 
     const c = gqlContext.getContext()
     c.scraper = scraper
