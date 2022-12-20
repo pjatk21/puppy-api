@@ -8,21 +8,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum TaskState {
-    WAITING = "WAITING",
-    RUNNING = "RUNNING",
-    REJECTED = "REJECTED",
-    DONE = "DONE"
-}
-
-export enum EventType {
-    reservation = "reservation",
-    exam = "exam",
-    workshop = "workshop",
-    lecture = "lecture",
-    other = "other"
-}
-
 export class App {
     version: string;
 }
@@ -36,19 +21,11 @@ export abstract class IQuery {
 
     abstract puppies(id: string[]): Puppy[] | Promise<Puppy[]>;
 
-    abstract availableGroups(): string[] | Promise<string[]>;
-
-    abstract availableHosts(): string[] | Promise<string[]>;
-
-    abstract allEvents(groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
-
-    abstract rangeEvents(begin: DateTime, end: DateTime, groups?: Nullable<string[]>, hosts?: Nullable<string[]>, type?: Nullable<EventType>): ScheduledEvent[] | Promise<ScheduledEvent[]>;
-
     abstract me(): User | Promise<User>;
 }
 
 export abstract class ISubscription {
-    abstract tasksDispositions(): Nullable<ScrapTask> | Promise<Nullable<ScrapTask>>;
+    abstract subscribeTasks(channel: string): ScrapTask | Promise<ScrapTask>;
 }
 
 export class Scraper {
@@ -63,17 +40,17 @@ export class ScraperToken {
 export abstract class IMutation {
     abstract createScraper(alias?: Nullable<string>): ScraperToken | Promise<ScraperToken>;
 
-    abstract updateOwnState(scraperId: string, state: string): string | Promise<string>;
+    abstract createChannel(): string | Promise<string>;
 
-    abstract updateTaskState(taskId: string, state: string): string | Promise<string>;
+    abstract publishTask(id?: Nullable<number>): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract triggerTask(taskId: string): string | Promise<string>;
+    abstract updateLock(locked: boolean): string | Promise<string>;
 
     abstract oauth2(): OAuth2 | Promise<OAuth2>;
 
     abstract createPuppy(name: string, age: number): Nullable<Puppy> | Promise<Nullable<Puppy>>;
 
-    abstract processFragment(html: string): ScheduledEvent | Promise<ScheduledEvent>;
+    abstract processShard(payload: string): boolean | Promise<boolean>;
 
     abstract setGroups(groups: string[]): string[] | Promise<string[]>;
 }
@@ -81,7 +58,6 @@ export abstract class IMutation {
 export class ScrapTask {
     id: string;
     name: string;
-    state: TaskState;
     since: DateTime;
     until: DateTime;
 }
@@ -100,18 +76,6 @@ export class Puppy {
     id: string;
     name: string;
     age: number;
-}
-
-export class ScheduledEvent {
-    id: string;
-    begin: DateTime;
-    end: DateTime;
-    title: string;
-    code: string;
-    groups: string[];
-    hosts: string[];
-    room: string;
-    type: EventType;
 }
 
 export class User {

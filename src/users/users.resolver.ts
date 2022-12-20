@@ -19,13 +19,6 @@ export class UsersResolver {
     return user
   }
 
-  @ResolveField('groups')
-  public async groups(@CurrentUser() user: User) {
-    const { groups } = await this.users.getGroups(user)
-    const groupsArray = groups.map(({ group }) => group)
-    return groupsArray
-  }
-
   @ResolveField('scrapers')
   public async scrapers(@CurrentUser() user: User) {
     return this.prisma.scraper.findMany({
@@ -33,15 +26,5 @@ export class UsersResolver {
         ownerId: user.id,
       },
     })
-  }
-
-  @Mutation('setGroups')
-  public async setGroups(
-    @Args('groups') newGroups: string[],
-    @CurrentUser() user: User,
-  ) {
-    const { groups } = await this.users.setGroups(user, newGroups)
-    const groupsArray = groups.map(({ group }) => group)
-    return groupsArray
   }
 }

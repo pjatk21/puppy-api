@@ -1,4 +1,3 @@
-import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo'
 import { Module } from '@nestjs/common'
 import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql'
 import path from 'path'
@@ -13,13 +12,14 @@ import { ScheduleModule } from './schedule/schedule.module'
 import { DateTimeScalar } from './datetime.scalar'
 import { HypervisorModule } from './hypervisor/hypervisor.module'
 import { PrismaService } from './prisma/prisma.service'
-import { GqlScraperAuthGuard } from './gql-scraper-token.guard'
+import { ScraperGuard } from './gql-scraper-token.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config'
 import { Oauth2Module } from './oauth2/oauth2.module'
 import { UsersModule } from './users/users.module'
-import { AppResolver } from './app/app.resolver';
+import { AppResolver } from './app/app.resolver'
 import Joi from 'joi'
+import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
 
 @Module({
   imports: [
@@ -27,36 +27,16 @@ import Joi from 'joi'
       rootPath: path.join(process.cwd(), '../puppy-spa/dist/'),
       serveRoot: '/',
     }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
+    GraphQLModule.forRootAsync<MercuriusDriverConfig>({
+      driver: MercuriusDriver,
       useFactory: () => ({
         typePaths: ['./**/*.graphql', './**/*.gql'],
         definitions: {
           path: path.join(process.cwd(), 'src/_autogen/graphql.ts'),
           outputAs: 'class',
         },
-        playground: false,
-        context: (context) => ({
-          ...context,
-        }),
-        subscriptions: {
-          'graphql-ws': true,
-          'subscriptions-transport-ws': true,
-        },
-        plugins: [
-          process.env.NODE_ENV === 'production'
-            ? ApolloServerPluginLandingPageProductionDefault({
-                footer: false,
-                // @ts-expect-error Apollo mistype
-                embed: true,
-                headers: {
-                  Authorization: 'Bearer <token>',
-                },
-              })
-            : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
-        ],
-        introspection: true,
-        cache: 'bounded',
+        graphiql: true,
+        subscription: true,
       }),
     }),
     PrismaModule,

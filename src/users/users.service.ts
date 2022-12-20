@@ -56,39 +56,4 @@ export class UsersService {
 
     return user
   }
-
-  public async getGroups(user: User) {
-    return this.prisma.user.findUniqueOrThrow({
-      where: {
-        id: user.id,
-      },
-      select: {
-        groups: true,
-      },
-    })
-  }
-
-  public setGroups(user: User, groups: string[]) {
-    return this.prisma.user.update({
-      where: {
-        id: user.id,
-      },
-      data: {
-        groups: {
-          createMany: {
-            data: groups.map((group) => ({ group })),
-            skipDuplicates: true,
-          },
-          deleteMany: {
-            group: {
-              notIn: groups,
-            },
-          },
-        },
-      },
-      select: {
-        groups: true,
-      },
-    })
-  }
 }

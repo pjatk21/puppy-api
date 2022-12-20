@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  devdb:
+    image: postgres
+    environment:
+      - POSTGRES_USER=puppy
+      - POSTGRES_PASSWORD=puppy
+      - POSTGRES_DB=puppy
+    ports:
+      - "5432:5432"
+
