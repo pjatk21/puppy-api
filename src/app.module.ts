@@ -1,11 +1,6 @@
 import { Module } from '@nestjs/common'
 import { GqlExecutionContext, GraphQLModule } from '@nestjs/graphql'
 import path from 'path'
-import {
-  ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageProductionDefault,
-  ApolloServerPluginLandingPageGraphQLPlayground,
-} from 'apollo-server-core'
 import { PuppiesModule } from './puppies/puppies.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ScheduleModule } from './schedule/schedule.module'
