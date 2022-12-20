@@ -1,16 +1,5 @@
 type Subscription {
-  tasksDispositions: ScrapTask
-}
-
-enum TaskState {
-  """Task is looking for a scraper that can execute it."""
-  WAITING
-  """Task is being executed by a scraper."""
-  RUNNING
-  """All available scrapers rejected task execution."""
-  REJECTED
-  """Task execution finished."""
-  DONE
+  subscribeTasks(channel: String!): ScrapTask!
 }
 
 type Scraper {
@@ -24,17 +13,15 @@ type ScraperToken {
 
 type Mutation {
   createScraper(alias: String): ScraperToken!
-  updateOwnState(scraperId: ID!, state: String!): String!
-  updateTaskState(taskId: ID!, state: String!): String!
-  triggerTask(taskId: ID!): String!
+  createChannel: ID!
+  publishTask(id: Int): String
+  updateLock(locked: Boolean!): String!
 }
 
 """Arguments required to start scrapping."""
 type ScrapTask {
-  id: ID!
+  id: String!
   name: String!
-  """State of task"""
-  state: TaskState!
   """First day to scrap"""
   since: DateTime!
   """Last day to scrap"""

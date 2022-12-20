@@ -12,7 +12,7 @@ import { ScheduleModule } from './schedule/schedule.module'
 import { DateTimeScalar } from './datetime.scalar'
 import { HypervisorModule } from './hypervisor/hypervisor.module'
 import { PrismaService } from './prisma/prisma.service'
-import { GqlScraperAuthGuard } from './gql-scraper-token.guard'
+import { ScraperGuard } from './gql-scraper-token.guard'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { ConfigModule } from '@nestjs/config'
 import { Oauth2Module } from './oauth2/oauth2.module'
@@ -36,9 +36,7 @@ import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius'
           outputAs: 'class',
         },
         graphiql: true,
-        subscription: {
-          fullWsTransport: true,
-        },
+        subscription: true,
       }),
     }),
     PrismaModule,

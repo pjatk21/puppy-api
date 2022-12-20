@@ -7,46 +7,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum EventType {
-  reservation
-  exam
-  workshop
-  lecture
-  other
-}
-
-enum Permission {
-  admin
-  scrapersCrud
-  scrapersRead
-}
-
-model ScheduledEvent {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  code        String
-  type        EventType @default(other)
-  groups      String[]  @default([])
-  room        String
-  begin       DateTime
-  end         DateTime
-  hosts       String[]  @default([])
-
-  @@unique([type, groups, begin, code])
-  @@index([code], type: Hash)
-  @@index([type], type: Hash)
-  @@index([begin(sort: Desc), code(sort: Desc)])
-}
-
 model User {
-  id          String            @id @default(uuid()) @db.Uuid
-  name        String
-  email       String            @unique
-  groups      UserGroups[]
-  scrapers   Scraper[]
-  sessions    UserSession[]
-  permissions UserPermissions[]
+  id       String        @id @default(uuid()) @db.Uuid
+  name     String
+  email    String        @unique
+  scrapers Scraper[]
+  sessions UserSession[]
 }
 
 model UserSession {
@@ -56,37 +22,81 @@ model UserSession {
   expiresAfter DateTime @default(dbgenerated("now() + interval '1 week'"))
 }
 
-model UserPermissions {
-  user       User       @relation(fields: [userId], references: [id])
-  userId     String     @db.Uuid
-  permission Permission
-
-  @@unique([userId, permission])
-}
-
-model UserGroups {
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @db.Uuid
-  group  String
-
-  @@unique([userId, group])
-}
-
 model Scraper {
-  id      String          @id @default(uuid()) @db.Uuid
-  alias   String?
-  owner   User            @relation(fields: [ownerId], references: [id])
-  ownerId String          @db.Uuid
-  tokens  ScraperToken[]
+  id       String           @id @default(uuid()) @db.Uuid
+  alias    String?
+  owner    User             @relation(fields: [ownerId], references: [id])
+  ownerId  String           @db.Uuid
+  tokens   ScraperToken[]
+  jobs     ScrapJob[]
+  channels ScraperChannel[]
 
   @@unique([alias, ownerId])
 }
 
 model ScraperToken {
-  token      String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'hex')"))
-  scraper   Scraper @relation(fields: [scraperId], references: [id], onDelete: Cascade)
+  token     String   @unique @default(dbgenerated("encode(gen_random_bytes(384), 'hex')"))
+  scraper   Scraper  @relation(fields: [scraperId], references: [id], onDelete: Cascade)
   scraperId String   @db.Uuid
-  when       DateTime @default(now())
+  when      DateTime @default(now())
 
   @@unique([token, scraperId])
+}
+
+model ScraperChannel {
+  id        String    @id @default(uuid()) @db.Uuid
+  scraper   Scraper   @relation(fields: [scraperId], references: [id], onDelete: Cascade)
+  scraperId String    @db.Uuid
+  createdAt DateTime  @default(now())
+  closedAt  DateTime?
+}
+
+enum JobStatus {
+  queued
+  pending
+  succeeded
+  failed
+}
+
+model ScrapTask {
+  id          Int        @id @default(autoincrement())
+  description String
+  createdAt   DateTime   @default(now())
+  skip        Int
+  take        Int
+  temporary   Boolean    @default(false)
+  jobs        ScrapJob[]
+}
+
+model ScrapJob {
+  id         Int             @id @default(autoincrement())
+  task       ScrapTask       @relation(fields: [taskId], references: [id], onDelete: Restrict)
+  taskId     Int
+  worker     Scraper?        @relation(fields: [workerId], references: [id], onDelete: SetNull)
+  workerId   String?         @db.Uuid
+  status     JobStatus       @default(queued)
+  queuedAt   DateTime        @default(now())
+  startedAt  DateTime?
+  finishedAt DateTime?
+  shards     ScheduleShard[]
+}
+
+model ScheduleShard {
+  id              Int                  @id @default(autoincrement())
+  sourceJob       ScrapJob             @relation(fields: [sourceJobId], references: [id], onDelete: Restrict)
+  sourceJobId     Int
+  receivedPayload Bytes
+  storedAt        DateTime             @default(now())
+  class           ScheduleClass?
+  reservation     ScheduleReservation?
+}
+
+model ScheduleClass {
+  id    Int           @id
+  shard ScheduleShard @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model ScheduleReservation {
+  id    Int           @id
+  shard ScheduleShard @relation(fields: [id], references: [id], onDelete: Cascade)
 }
