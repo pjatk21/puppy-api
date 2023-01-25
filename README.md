@@ -1,3 +1,10 @@
+> **Warning**
+>
+> Ten projekt został porzucony.
+>
+> Sprawdź [CaaTS](https://caats.app/), to jest prawdopodbnie to czego szukasz.
+
+
 # Puppy
 GraphQL/~~REST~~ API dla wszystkich studentów PJATK.
 
